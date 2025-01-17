@@ -23,7 +23,13 @@ const CURRENCIES = [
   "INR",
 ];
 
-export default function CurrencyConverter() {
+type CurrencyConverterProps = {
+  onCurrencyChange: (currency: string) => void;
+};
+
+export default function CurrencyConverter({
+  onCurrencyChange,
+}: CurrencyConverterProps) {
   const [amount, setAmount] = useState("");
   const [fromCurrency, setFromCurrency] = useState("USD");
   const [toCurrency, setToCurrency] = useState("EUR");
@@ -42,6 +48,11 @@ export default function CurrencyConverter() {
     }
   };
 
+  const handleFromCurrencyChange = (currency: string) => {
+    setFromCurrency(currency);
+    onCurrencyChange(currency);
+  };
+
   return (
     <Card className="w-full">
       <CardHeader>
@@ -56,7 +67,10 @@ export default function CurrencyConverter() {
             onChange={(e) => setAmount(e.target.value)}
           />
           <div className="grid grid-cols-2 gap-4">
-            <Select value={fromCurrency} onValueChange={setFromCurrency}>
+            <Select
+              value={fromCurrency}
+              onValueChange={handleFromCurrencyChange}
+            >
               <SelectTrigger>
                 <SelectValue placeholder="From" />
               </SelectTrigger>
